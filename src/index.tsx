@@ -4,9 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const initialProps = { todos: [] }
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App {...initialProps}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

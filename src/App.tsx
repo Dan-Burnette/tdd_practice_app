@@ -1,29 +1,33 @@
 import React from 'react';
+import Todo from './interfaces';
 import TodoForm from './TodoForm';
 import './App.css';
 
-interface Todos {
-  todos: Array<string>
+interface TodoProps {
+  todos: Todo[]
 }
 
-class App extends React.Component<Todos, Todos> {
+class App extends React.Component<TodoProps> {
 
-  constructor(props: Todos) {
+  constructor(props: TodoProps) {
     super(props);
-    this.state = {
-      todos: props.todos
-    };
+    // console.log('props', props);
+    // this.state = {
+    //   todos: props.todos
+    // };
   }
 
   todos() {
-    console.log("this.state is ", this.state);
-    return this.state.todos.map((todo, idx) => {
-      <p>{todo}</p>
+    const todos = this.props.todos;
+    return todos.map((todo, idx) => {
+      return(<p key={idx}>{todo.description}</p>)
     });
   }
 
-  render(props) {
+  render() {
     const todos = this.todos();
+
+    console.log("rendering todos which are:", todos);
 
     return(
       <div className="App">

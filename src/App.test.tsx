@@ -21,11 +21,16 @@ test('renders the todo form', () => {
 describe('when todos are present', () => {
 
   it('renders the todos properly', () => {
-    const props = { todos: ["do that thing", "do that other thing"] }
+    const todos = [
+      { description: "do that thing" },
+      { description: "do that other thing" }
+    ];
+    const props = {todos: todos}
+
     render(<App {...props} />);
 
     todos.forEach(todo => {
-      const todoElement = screen.getByText(todo);
+      const todoElement = screen.getByText(todo.description);
       expect(todoElement).toBeInTheDocument();
     });
   });
