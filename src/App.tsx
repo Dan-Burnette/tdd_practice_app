@@ -29,15 +29,10 @@ class App extends React.Component<TodoList, TodoList> {
     event.preventDefault();
     const newTodo = { description: description, complete: false };
     const newTodosState = [...this.state.todos, newTodo];
-
-    console.log('newTodosState', newTodosState);
     this.setState({todos: newTodosState});
-
-    console.log("new state is", this.state);
   }
 
   render() {
-    console.log("rendering...");
     const todos = this.todos();
 
     return(

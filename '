@@ -52,8 +52,13 @@ it('creates a todo properly', () => {
   const createTodoButtonElement = screen.getByRole('button')
   userEvent.click(createTodoButtonElement);
 
-  const todoElement = screen.getByRole('listitem' );
-  expect(todoElement.innerHTML).toBe(description);
+  const todoListElement = screen.getByRole('list');
+  const todoElements = todoListElement.children;
+
+  expect(todoElements.length).toBe(1);
+
+  console.log("todoElements are", todoElements);
+  expect(todoElements.item(0).text).toBe(description);
 });
 
 

@@ -19,7 +19,6 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
 
   updateInputValue(event: React.FormEvent<HTMLInputElement>) {
     this.setState({inputValue: event.currentTarget.value});
-    console.log("form state is now", this.state);
   }
 
   render() {
@@ -28,9 +27,9 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
       <form name="todo-form">
         <label htmlFor="new-todo">New Todo</label>
         <input
+          type="text" id="new-todo" name="new-todo"
           value={this.state.inputValue}
           onChange={this.updateInputValue}
-          type="text" id="new-todo" name="new-todo"
         />
         <button
           type="submit"
