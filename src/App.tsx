@@ -16,19 +16,28 @@ class App extends React.Component<TodoList, TodoList> {
   constructor(props: TodoList) {
     super(props);
     this.state = props;
+    this.createTodo = this.createTodo.bind(this)
   }
 
   todos() {
     return this.state.todos.map((todo, idx) => {
-      return(<p key={idx}>{todo.description}</p>)
+      return(<li key={idx}>{todo.description}</li>)
     });
   }
 
-  // TODO
-  createTodo() {
+  createTodo(event: React.MouseEvent<HTMLButtonElement>, description: string) {
+    event.preventDefault();
+    const newTodo = { description: description, complete: false };
+    const newTodosState = [...this.state.todos, newTodo];
+
+    console.log('newTodosState', newTodosState);
+    this.setState({todos: newTodosState});
+
+    console.log("new state is", this.state);
   }
 
   render() {
+    console.log("rendering...");
     const todos = this.todos();
 
     return(
@@ -38,7 +47,10 @@ class App extends React.Component<TodoList, TodoList> {
         </header>
 
         <TodoForm createTodo={this.createTodo} />
-        { todos }
+
+        <ul>
+          { todos }
+        </ul>
       </div>
     );
   }

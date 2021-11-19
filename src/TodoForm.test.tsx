@@ -32,6 +32,17 @@ describe('element rendering', () => {
 
 });
 
+it('properly updates the input value', () => {
+  const mockCreateTodo = jest.fn();
+  render(<TodoForm createTodo={mockCreateTodo}/>);
+
+  const inputElement = screen.getByRole('textbox') as HTMLInputElement;
+  const description = 'test todo';
+  userEvent.type(inputElement, description);
+
+  expect(inputElement.value).toBe(description);
+});
+
 it('calls the createTodo function when the submit button is clicked', () => {
   const mockCreateTodo = jest.fn();
   render(<TodoForm createTodo={mockCreateTodo}/>);
