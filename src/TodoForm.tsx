@@ -1,45 +1,52 @@
-import React from 'react';
+import React from "react";
+import autobind from "autobind-decorator";
 
 interface TodoFormProps {
-  createTodo:
-    (event: React.MouseEvent<HTMLButtonElement>, description: string) => void
+  createTodo: (description: string) => void;
 }
 
 interface TodoFormState {
-  inputValue: string
+  inputValue: string;
 }
 
+@autobind
 class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
-
   constructor(props: TodoFormProps) {
     super(props);
-    this.state = { inputValue: '' }
-    this.updateInputValue = this.updateInputValue.bind(this)
+    this.state = { inputValue: "" };
   }
 
   updateInputValue(event: React.FormEvent<HTMLInputElement>) {
-    this.setState({inputValue: event.currentTarget.value});
+    this.setState({ inputValue: event.currentTarget.value });
+  }
+
+  resetInputValue() {
+    this.setState({ inputValue: "" });
+  }
+
+  handleFormSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    this.props.createTodo(this.state.inputValue);
+    this.resetInputValue();
   }
 
   render() {
-    const { createTodo } = this.props;
     return (
       <form name="todo-form">
         <label htmlFor="new-todo">New Todo</label>
         <input
-          type="text" id="new-todo" name="new-todo"
+          type="text"
+          id="new-todo"
+          name="new-todo"
           value={this.state.inputValue}
           onChange={this.updateInputValue}
         />
-        <button
-          type="submit"
-          onClick={(e) => createTodo(e, this.state.inputValue)}>
+        <button type="submit" onClick={this.handleFormSubmit}>
           Create
         </button>
       </form>
     );
   }
-
 }
 
 export default TodoForm;
