@@ -1,11 +1,17 @@
 import React from 'react';
 
-function TodoForm() {
+interface TodoFormProps {
+  createTodo: (event: React.MouseEvent<HTMLButtonElement>) => void
+}
+
+function TodoForm(props: TodoFormProps) {
+  const { createTodo } = props;
+
   return (
     <form name="todo-form">
       <label htmlFor="new-todo">New Todo</label>
       <input type="text" id="new-todo" name="new-todo" />
-      <button type="submit">Create</button>
+      <button type="submit" onClick={createTodo}>Create</button>
     </form>
   );
 }

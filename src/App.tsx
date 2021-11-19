@@ -3,20 +3,17 @@ import TodoForm from './TodoForm';
 import './App.css';
 
 interface Todo {
-  description: string
+  description: string,
+  complete: boolean
 }
 
-interface TodoProps {
+interface TodoList {
   todos: Todo[]
 }
 
-interface TodoState {
-  todos: Todo[]
-}
+class App extends React.Component<TodoList, TodoList> {
 
-class App extends React.Component<TodoProps, TodoState> {
-
-  constructor(props: TodoProps) {
+  constructor(props: TodoList) {
     super(props);
     this.state = props;
   }
@@ -25,6 +22,10 @@ class App extends React.Component<TodoProps, TodoState> {
     return this.state.todos.map((todo, idx) => {
       return(<p key={idx}>{todo.description}</p>)
     });
+  }
+
+  // TODO
+  createTodo() {
   }
 
   render() {
@@ -36,22 +37,12 @@ class App extends React.Component<TodoProps, TodoState> {
           Todo Application
         </header>
 
-        <TodoForm />
+        <TodoForm createTodo={this.createTodo} />
         { todos }
       </div>
     );
   }
 
 }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         Todo Application
-//       </header>
-//     </div>
-//   );
-// }
 
 export default App;

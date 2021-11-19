@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders the application header', () => {
+it('renders the application header', () => {
   const props = { todos: [] }
   render(<App {...props}/>);
 
@@ -10,7 +10,7 @@ test('renders the application header', () => {
   expect(headerElement).toBeInTheDocument();
 });
 
-test('renders the todo form', () => {
+it('renders the todo form', () => {
   const props = { todos: [] }
   render(<App {...props} />);
 
@@ -20,10 +20,10 @@ test('renders the todo form', () => {
 
 describe('when todos are present', () => {
 
-  it('renders the todos properly', () => {
+  it('renders the todos', () => {
     const todos = [
-      { description: "do that thing" },
-      { description: "do that other thing" }
+      { description: "do that thing", complete: false },
+      { description: "do that other thing", complete: false }
     ];
     const props = {todos: todos}
 
@@ -35,6 +35,10 @@ describe('when todos are present', () => {
     });
   });
 
+});
+
+it('creates a todo properly when the submit button is clicked', () => {
+  expect(true).toBe(false)
 });
 
 

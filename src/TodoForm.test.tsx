@@ -1,31 +1,43 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 import TodoForm from './TodoForm';
 
-test('renders the form', () => {
-  render(<TodoForm />);
+describe('element rendering', () => {
 
-  const formElement = screen.getByRole('form');
-  expect(formElement).toBeInTheDocument();
+  beforeEach(() => {
+    const mockCreateTodo = jest.fn();
+    render(<TodoForm createTodo={mockCreateTodo}/>);
+  });
+
+  it('renders the form', () => {
+    const formElement = screen.getByRole('form');
+    expect(formElement).toBeInTheDocument();
+  });
+
+  it('renders the new todo label', () => {
+    const labelElement = screen.getByLabelText('New Todo');
+    expect(labelElement).toBeInTheDocument();
+  });
+
+  it('renders the new todo input', () => {
+    const inputElement = screen.getByRole('textbox')
+    expect(inputElement).toBeInTheDocument();
+  });
+
+  it('renders the submit button', () => {
+    const buttonElement = screen.getByRole('button')
+    expect(buttonElement).toBeInTheDocument();
+  });
+
 });
 
-test('renders the new todo label', () => {
-  render(<TodoForm />);
-
-  const labelElement = screen.getByLabelText('New Todo');
-  expect(labelElement).toBeInTheDocument();
-});
-
-test('renders the new todo input', () => {
-  render(<TodoForm />);
-
-  const inputElement = screen.getByRole('textbox')
-  expect(inputElement).toBeInTheDocument();
-});
-
-test('renders the submit button', () => {
-  render(<TodoForm />);
+it('calls the createTodo function when the submit button is clicked', () => {
+  const mockCreateTodo = jest.fn();
+  render(<TodoForm createTodo={mockCreateTodo}/>);
 
   const buttonElement = screen.getByRole('button')
-  expect(buttonElement).toBeInTheDocument();
+  userEvent.click(buttonElement);
+
+  expect(mockCreateTodo.mock.calls.length).toEqual(1);
 });
