@@ -1,28 +1,25 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, getByText } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import App from './App';
 
 describe('element rendering', () => {
 
-  beforeEach(() => {
+  it('renders the application header', () => {
     const props = { todos: [] }
     render(<App {...props}/>);
-  });
 
-  it('renders the application header', () => {
     const headerElement = screen.getByText('Todo Application');
     expect(headerElement).toBeInTheDocument();
   });
 
   it('renders the todo form', () => {
+    const props = { todos: [] }
+    render(<App {...props}/>);
+
     const formElement = screen.getByRole('form');
     expect(formElement).toBeInTheDocument();
   });
-
-});
-
-describe('when todos are present', () => {
 
   it('renders the todos', () => {
     const todos = [
@@ -46,14 +43,33 @@ it('creates a todo properly', () => {
   render(<App {...props}/>);
 
   const todoInputElement = screen.getByRole('textbox');
-  const description = 'do something';
-  userEvent.type(todoInputElement, description);
+  userEvent.type(todoInputElement, 'do something');
 
   const createTodoButtonElement = screen.getByRole('button')
   userEvent.click(createTodoButtonElement);
 
-  const todoElement = screen.getByRole('listitem' );
-  expect(todoElement.innerHTML).toBe(description);
+  const todoElement = screen.getByRole('listitem');
+  expect(todoElement.innerHTML).toMatch(/do something/);
+});
+
+it('deletes a todo properly', () => {
+  const todos = [
+    { description: "first todo", complete: false },
+    { description: "second todo", complete: false },
+    { description: "third todo", complete: false }
+  ];
+  const props = { todos: todos } 
+  render(<App {...props} />);
+
+  const secondTodoElement = screen.getByText('second todo');
+  const secondTodoDeleteButtonElement = getByText(secondTodoElement, 'Delete');
+  userEvent.click(secondTodoDeleteButtonElement);
+
+  const todoListElement = screen.getByRole('list');
+  const listContent = todoListElement.innerHTML;
+  expect(listContent).toMatch(/first todo/)
+  expect(listContent).not.toMatch(/second todo/)
+  expect(listContent).toMatch(/third todo/)
 });
 
 
