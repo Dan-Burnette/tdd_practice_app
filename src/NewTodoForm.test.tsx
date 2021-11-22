@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import TodoForm from "./TodoForm";
+import NewTodoForm from "./NewTodoForm";
 
 describe("element rendering", () => {
   beforeEach(() => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
   });
 
   it("renders the form", () => {
@@ -32,7 +32,7 @@ describe("element rendering", () => {
 
 it("properly updates the input value", () => {
   const mockCreateTodo = jest.fn();
-  render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+  render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
   const inputElement = screen.getByRole("textbox") as HTMLInputElement;
   const description = "test todo";
@@ -44,7 +44,7 @@ it("properly updates the input value", () => {
 describe("form submission for a new todo", () => {
   it("calls the createTodo function", () => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
     const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     userEvent.type(inputElement, "do something");
@@ -56,7 +56,7 @@ describe("form submission for a new todo", () => {
 
   it("resets the input", () => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
     const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     userEvent.type(inputElement, "do something");
@@ -68,7 +68,7 @@ describe("form submission for a new todo", () => {
 
   it("does not display the errorMessage", () => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
     const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     userEvent.type(inputElement, "do something");
@@ -83,7 +83,7 @@ describe("form submission for a new todo", () => {
 describe("form submission for an empty todo", () => {
   it("does NOT call the createTodo function", () => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
     const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     userEvent.type(inputElement, "");
@@ -95,7 +95,7 @@ describe("form submission for an empty todo", () => {
 
   it("displays a fitting error message", () => {
     const mockCreateTodo = jest.fn();
-    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+    render(<NewTodoForm createTodo={mockCreateTodo} todos={[]} />);
 
     const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     userEvent.type(inputElement, "");
@@ -114,7 +114,7 @@ describe("form submission for a duplicate new todo", () => {
   it("does NOT call the createTodo function", () => {
     const mockCreateTodo = jest.fn();
     render(
-      <TodoForm
+      <NewTodoForm
         createTodo={mockCreateTodo}
         todos={[{ description: "do something", complete: false }]}
       />
@@ -131,7 +131,7 @@ describe("form submission for a duplicate new todo", () => {
   it("displays a fitting error message", () => {
     const mockCreateTodo = jest.fn();
     render(
-      <TodoForm
+      <NewTodoForm
         createTodo={mockCreateTodo}
         todos={[{ description: "do something", complete: false }]}
       />

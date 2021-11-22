@@ -2,19 +2,19 @@ import React from "react";
 import autobind from "autobind-decorator";
 import { Todo } from "./interfaces";
 
-interface TodoFormProps {
+interface NewTodoFormProps {
   todos: Todo[];
   createTodo: (description: string) => void;
 }
 
-interface TodoFormState {
+interface NewTodoFormState {
   inputValue: string;
   errorMessage: string;
 }
 
 @autobind
-class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
-  constructor(props: TodoFormProps) {
+class NewTodoForm extends React.Component<NewTodoFormProps, NewTodoFormState> {
+  constructor(props: NewTodoFormProps) {
     super(props);
     this.state = { inputValue: "", errorMessage: "" };
   }
@@ -80,4 +80,4 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
   }
 }
 
-export default TodoForm;
+export default NewTodoForm;

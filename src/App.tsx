@@ -1,7 +1,8 @@
 import React from "react";
 import autobind from "autobind-decorator";
 import { TodoList } from "./interfaces";
-import TodoForm from "./TodoForm";
+import NewTodoForm from "./NewTodoForm";
+import EditTodoForm from "./EditTodoForm";
 import "./App.css";
 
 @autobind
@@ -44,7 +45,7 @@ class App extends React.Component<TodoList, TodoList> {
       <div className="App">
         <header className="App-header">Todo Application</header>
 
-        <TodoForm todos={this.state.todos} createTodo={this.createTodo} />
+        <NewTodoForm todos={this.state.todos} createTodo={this.createTodo} />
 
         <ul>{todos}</ul>
       </div>
