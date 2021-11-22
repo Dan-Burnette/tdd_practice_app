@@ -23,8 +23,8 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     this.setState({ inputValue: event.currentTarget.value });
   }
 
-  resetInputValue() {
-    this.setState({ inputValue: "" });
+  reset() {
+    this.setState({ inputValue: "", errorMessage: "" });
   }
 
   todoExists(description: string) {
@@ -48,7 +48,7 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
       });
     } else {
       this.props.createTodo(this.state.inputValue);
-      this.resetInputValue();
+      this.reset();
     }
   }
 
