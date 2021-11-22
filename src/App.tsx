@@ -1,6 +1,6 @@
 import React from "react";
 import autobind from "autobind-decorator";
-import { TodoList } from "./interfaces";
+import { Todo, TodoList } from "./interfaces";
 import NewTodoForm from "./NewTodoForm";
 import EditTodoForm from "./EditTodoForm";
 import "./App.css";
@@ -18,21 +18,21 @@ class App extends React.Component<TodoList, TodoList> {
     this.setState({ todos: newTodosState });
   }
 
-  toggleTodoCompletion(description: string) {
-    const newTodosState = this.state.todos.map((todo) => {
-      if (todo.description === description) {
-        return { description: description, complete: !todo.complete };
+  toggleTodoCompletion(todo: Todo) {
+    const newTodosState = this.state.todos.map((t) => {
+      if (todo.description === t.description) {
+        return { description: todo.description, complete: !todo.complete };
       } else {
-        return todo;
+        return t;
       }
     });
 
     this.setState({ todos: newTodosState });
   }
 
-  deleteTodo(description: string) {
+  deleteTodo(todo: Todo) {
     const newTodosState = this.state.todos.filter((item) => {
-      return item.description !== description;
+      return item.description !== todo.description;
     });
     this.setState({ todos: newTodosState });
   }
