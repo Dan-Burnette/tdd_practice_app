@@ -46,6 +46,8 @@ describe("form submission for a new todo", () => {
     const mockCreateTodo = jest.fn();
     render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
 
+    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
+    userEvent.type(inputElement, "do something");
     const buttonElement = screen.getByRole("button");
     userEvent.click(buttonElement);
 
@@ -56,10 +58,11 @@ describe("form submission for a new todo", () => {
     const mockCreateTodo = jest.fn();
     render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
 
+    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
+    userEvent.type(inputElement, "do something");
     const buttonElement = screen.getByRole("button");
     userEvent.click(buttonElement);
 
-    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
     expect(inputElement.value).toBe("");
   });
 
@@ -67,6 +70,8 @@ describe("form submission for a new todo", () => {
     const mockCreateTodo = jest.fn();
     render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
 
+    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
+    userEvent.type(inputElement, "do something");
     const buttonElement = screen.getByRole("button");
     userEvent.click(buttonElement);
 
@@ -75,7 +80,35 @@ describe("form submission for a new todo", () => {
   });
 });
 
-describe("form submissions for an empty todo", () => {});
+describe("form submission for an empty todo", () => {
+  it("does NOT call the createTodo function", () => {
+    const mockCreateTodo = jest.fn();
+    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+
+    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
+    userEvent.type(inputElement, "");
+    const buttonElement = screen.getByRole("button");
+    userEvent.click(buttonElement);
+
+    expect(mockCreateTodo.mock.calls.length).toEqual(0);
+  });
+
+  it("displays a fitting error message", () => {
+    const mockCreateTodo = jest.fn();
+    render(<TodoForm createTodo={mockCreateTodo} todos={[]} />);
+
+    const inputElement = screen.getByRole("textbox") as HTMLInputElement;
+    userEvent.type(inputElement, "");
+    const buttonElement = screen.getByRole("button");
+    userEvent.click(buttonElement);
+
+    const errorMessageElement = screen.getByRole("alert");
+    expect(errorMessageElement).toBeInTheDocument();
+    expect(errorMessageElement.innerHTML).toContain(
+      "Oops! You can't add a blank todo!"
+    );
+  });
+});
 
 describe("form submission for a duplicate new todo", () => {
   it("does NOT call the createTodo function", () => {
@@ -95,7 +128,7 @@ describe("form submission for a duplicate new todo", () => {
     expect(mockCreateTodo.mock.calls.length).toEqual(0);
   });
 
-  it("displays an error message", () => {
+  it("displays a fitting error message", () => {
     const mockCreateTodo = jest.fn();
     render(
       <TodoForm

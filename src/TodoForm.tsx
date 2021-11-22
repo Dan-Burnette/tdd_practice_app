@@ -37,9 +37,14 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
     event.preventDefault();
 
     const alreadyExists = this.todoExists(this.state.inputValue);
+    const isBlank = this.state.inputValue.length === 0;
     if (alreadyExists) {
       this.setState({
         errorMessage: "You've already added that todo to your list.",
+      });
+    } else if (isBlank) {
+      this.setState({
+        errorMessage: "Oops! You can't add a blank todo!",
       });
     } else {
       this.props.createTodo(this.state.inputValue);
