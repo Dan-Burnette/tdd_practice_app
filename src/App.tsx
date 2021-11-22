@@ -1,6 +1,6 @@
 import React from "react";
 import autobind from "autobind-decorator";
-import { Todo, TodoList } from "./interfaces";
+import { TodoList } from "./interfaces";
 import TodoForm from "./TodoForm";
 import "./App.css";
 
