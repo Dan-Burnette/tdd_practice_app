@@ -12,15 +12,15 @@ describe("element rendering", () => {
     expect(headerElement).toBeInTheDocument();
   });
 
-  it("renders the todo form", () => {
+  it("renders the new todo form", () => {
     const props = { todos: [] };
     render(<App {...props} />);
 
-    const formElement = screen.getByRole("form");
+    const formElement =  screen.getByRole('form')
     expect(formElement).toBeInTheDocument();
   });
 
-  it("renders the todos", () => {
+  it("renders existing todos", () => {
     const todos = [
       { description: "do that thing", complete: false },
       { description: "do that other thing", complete: false },
@@ -59,7 +59,7 @@ it("deletes a todo properly", () => {
   const props = { todos: todos };
   render(<App {...props} />);
 
-  const secondTodoElement = screen.getByText("second todo");
+  const secondTodoElement = screen.getByText("second todo").closest('form') as HTMLFormElement;
   const secondTodoDeleteButtonElement = getByText(secondTodoElement, "Delete");
   userEvent.click(secondTodoDeleteButtonElement);
 

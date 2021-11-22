@@ -18,8 +18,11 @@ class App extends React.Component<TodoList, TodoList> {
     this.setState({ todos: newTodosState });
   }
 
-  deleteTodo(event: React.MouseEvent<HTMLButtonElement>, description: string) {
-    event.preventDefault();
+  //TODO
+  updateTodo(description: string) {
+  }
+
+  deleteTodo(description: string) {
     const newTodosState = this.state.todos.filter((item) => {
       return item.description !== description;
     });
@@ -27,13 +30,11 @@ class App extends React.Component<TodoList, TodoList> {
   }
 
   todos() {
+    const {updateTodo, deleteTodo} = this;
     return this.state.todos.map((todo, idx) => {
       return (
         <li key={idx}>
-          {todo.description}
-          <button onClick={(e) => this.deleteTodo(e, todo.description)}>
-            Delete
-          </button>
+          <EditTodoForm todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo} />
         </li>
       );
     });
@@ -44,9 +45,7 @@ class App extends React.Component<TodoList, TodoList> {
     return (
       <div className="App">
         <header className="App-header">Todo Application</header>
-
         <NewTodoForm todos={this.state.todos} createTodo={this.createTodo} />
-
         <ul>{todos}</ul>
       </div>
     );

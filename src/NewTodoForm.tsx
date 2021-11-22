@@ -61,7 +61,7 @@ class NewTodoForm extends React.Component<NewTodoFormProps, NewTodoFormState> {
   render() {
     const errorMessage = this.errorMessage();
     return (
-      <form name="todo-form">
+      <form name="new-todo">
         <label htmlFor="new-todo">New Todo</label>
         <input
           type="text"
