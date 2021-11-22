@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, getByText } from "@testing-library/react";
+import { render, screen, getByText, getByRole } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -16,7 +16,7 @@ describe("element rendering", () => {
     const props = { todos: [] };
     render(<App {...props} />);
 
-    const formElement =  screen.getByRole('form')
+    const formElement = screen.getByRole("form");
     expect(formElement).toBeInTheDocument();
   });
 
@@ -59,7 +59,9 @@ it("deletes a todo properly", () => {
   const props = { todos: todos };
   render(<App {...props} />);
 
-  const secondTodoElement = screen.getByText("second todo").closest('form') as HTMLFormElement;
+  const secondTodoElement = screen
+    .getByText("second todo")
+    .closest("form") as HTMLFormElement;
   const secondTodoDeleteButtonElement = getByText(secondTodoElement, "Delete");
   userEvent.click(secondTodoDeleteButtonElement);
 
@@ -68,4 +70,21 @@ it("deletes a todo properly", () => {
   expect(listContent).toMatch(/first todo/);
   expect(listContent).not.toMatch(/second todo/);
   expect(listContent).toMatch(/third todo/);
+});
+
+it("updates  a todo properly", () => {
+  const todos = [{ description: "do something", complete: false }];
+  const props = { todos: todos };
+  render(<App {...props} />);
+
+  const editTodoFormElement = screen
+    .getByText("do something")
+    .closest("form") as HTMLFormElement;
+  const checkboxElement = getByRole(editTodoFormElement, "checkbox");
+
+  userEvent.click(checkboxElement);
+  expect(checkboxElement).toBeChecked();
+
+  userEvent.click(checkboxElement);
+  expect(checkboxElement).not.toBeChecked();
 });

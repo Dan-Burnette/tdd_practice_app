@@ -18,8 +18,16 @@ class App extends React.Component<TodoList, TodoList> {
     this.setState({ todos: newTodosState });
   }
 
-  //TODO
-  updateTodo(description: string) {
+  toggleTodoCompletion(description: string) {
+    const newTodosState = this.state.todos.map((todo) => {
+      if (todo.description === description) {
+        return {description: description, complete: !todo.complete}
+      } else {
+        return todo;
+      }
+    });
+
+    this.setState({todos: newTodosState});
   }
 
   deleteTodo(description: string) {
@@ -30,11 +38,16 @@ class App extends React.Component<TodoList, TodoList> {
   }
 
   todos() {
-    const {updateTodo, deleteTodo} = this;
+    const { toggleTodoCompletion, deleteTodo } = this;
     return this.state.todos.map((todo, idx) => {
       return (
         <li key={idx}>
-          <EditTodoForm todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo} />
+          <EditTodoForm
+            description={todo.description}
+            complete={todo.complete}
+            toggleTodoCompletion={toggleTodoCompletion}
+            deleteTodo={deleteTodo}
+          />
         </li>
       );
     });
