@@ -72,7 +72,7 @@ it("deletes a todo properly", () => {
   expect(listContent).toMatch(/third todo/);
 });
 
-it("updates  a todo properly", () => {
+it("updates a todo's completion properly", () => {
   const todos = [{ description: "do something", complete: false }];
   const props = { todos: todos };
   render(<App {...props} />);

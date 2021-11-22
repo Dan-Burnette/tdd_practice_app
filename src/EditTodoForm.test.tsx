@@ -38,7 +38,7 @@ describe("element rendering", () => {
   });
 });
 
-describe("when the completion checkbox is toggled ", () => {
+describe("when the completion checkbox is toggled", () => {
   it("calls the toggleTodoCompletion function", () => {
     const mockUpdateTodo = jest.fn();
     const mockDeleteTodo = jest.fn();

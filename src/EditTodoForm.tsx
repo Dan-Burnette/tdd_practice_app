@@ -24,7 +24,6 @@ class EditTodoForm extends React.Component<EditTodoFormProps> {
 
   render() {
     const {todo} = this.props;
-    console.log("rendering the editTodo form...", this.props);
 
     return (
       <form name="edit-todo">
