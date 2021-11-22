@@ -43,8 +43,7 @@ class App extends React.Component<TodoList, TodoList> {
       return (
         <li key={idx}>
           <EditTodoForm
-            description={todo.description}
-            complete={todo.complete}
+            todo={todo}
             toggleTodoCompletion={toggleTodoCompletion}
             deleteTodo={deleteTodo}
           />

@@ -10,8 +10,7 @@ describe("element rendering", () => {
     const todo = { description: "do something", complete: false };
     render(
       <EditTodoForm
-        description={todo.description}
-        complete={todo.complete}
+        todo={todo}
         toggleTodoCompletion={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
       />
@@ -46,8 +45,7 @@ describe("when the completion checkbox is toggled ", () => {
     const todo = { description: "do something", complete: false };
     render(
       <EditTodoForm
-        description={todo.description}
-        complete={todo.complete}
+        todo={todo}
         toggleTodoCompletion={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
       />
@@ -67,8 +65,7 @@ describe("when the delete button is pressed", () => {
     const todo = { description: "do something", complete: false };
     render(
       <EditTodoForm
-        description={todo.description}
-        complete={todo.complete}
+        todo={todo}
         toggleTodoCompletion={mockUpdateTodo}
         deleteTodo={mockDeleteTodo}
       />

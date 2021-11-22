@@ -1,9 +1,9 @@
 import React from "react";
 import autobind from "autobind-decorator";
+import {Todo} from './interfaces';
 
 interface EditTodoFormProps {
-  description: string;
-  complete: boolean;
+  todo: Todo,
   toggleTodoCompletion: (description: string) => void;
   deleteTodo: (description: string) => void;
 }
@@ -12,30 +12,30 @@ interface EditTodoFormProps {
 class EditTodoForm extends React.Component<EditTodoFormProps> {
 
   handleUpdate(event: React.FormEvent<HTMLInputElement>) {
-    const { description, toggleTodoCompletion } = this.props;
-    toggleTodoCompletion(description);
+    const { todo, toggleTodoCompletion } = this.props;
+    toggleTodoCompletion(todo.description);
   }
 
   handleDelete(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
-    const { description, deleteTodo } = this.props;
-    deleteTodo(description);
+    const { todo, deleteTodo } = this.props;
+    deleteTodo(todo.description);
   }
 
   render() {
-    const { description, complete } = this.props;
+    const {todo} = this.props;
     console.log("rendering the editTodo form...", this.props);
 
     return (
       <form name="edit-todo">
-        <label htmlFor="edit-todo">{description}</label>
+        <label htmlFor="edit-todo">{todo.description}</label>
 
         <input
           type="checkbox"
           id="edit-todo"
           name="edit-todo"
           onChange={this.handleUpdate}
-          checked={complete}
+          checked={todo.complete}
         />
 
         <button onClick={this.handleDelete}>Delete</button>
