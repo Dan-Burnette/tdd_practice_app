@@ -36,18 +36,42 @@ describe("element rendering", () => {
   });
 });
 
-it("creates a todo properly", () => {
-  const props = { todos: [] };
-  render(<App {...props} />);
+describe("todo creation", () => {
+  it("creates a todo properly", () => {
+    const props = { todos: [] };
+    render(<App {...props} />);
 
-  const todoInputElement = screen.getByRole("textbox");
-  userEvent.type(todoInputElement, "do something");
+    const todoInputElement = screen.getByRole("textbox");
+    userEvent.type(todoInputElement, "do something");
 
-  const createTodoButtonElement = screen.getByRole("button");
-  userEvent.click(createTodoButtonElement);
+    const createTodoButtonElement = screen.getByText("Create Todo");
+    userEvent.click(createTodoButtonElement);
 
-  const todoElement = screen.getByRole("listitem");
-  expect(todoElement.innerHTML).toMatch(/do something/);
+    const todoElement = screen.getByRole("listitem");
+    expect(todoElement.innerHTML).toMatch(/do something/);
+  });
+
+  it("stops duplicate todo creation and shows an error message", () => {
+    const duplicatedDescription = "do something";
+    const props = {
+      todos: [{ description: duplicatedDescription, complete: false }],
+    };
+    render(<App {...props} />);
+
+    const todoInputElement = screen.getByRole("textbox");
+    userEvent.type(todoInputElement, duplicatedDescription);
+
+    const createTodoButtonElement = screen.getByText("Create Todo");
+    userEvent.click(createTodoButtonElement);
+
+    const todoElements = screen.getAllByRole("listitem");
+    const errorMessageElement = screen.getByText(
+      "You've already added that todo to your list."
+    );
+
+    expect(todoElements.length).toBe(1);
+    expect(errorMessageElement).toBeInTheDocument();
+  });
 });
 
 it("deletes a todo properly", () => {

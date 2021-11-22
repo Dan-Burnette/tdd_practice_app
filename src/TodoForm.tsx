@@ -42,7 +42,7 @@ class TodoForm extends React.Component<TodoFormProps, TodoFormState> {
           onChange={this.updateInputValue}
         />
         <button type="submit" onClick={this.handleFormSubmit}>
-          Create
+          Create Todo
         </button>
       </form>
     );
