@@ -31,9 +31,7 @@ class App extends React.Component<TodoList, TodoList> {
   }
 
   deleteTodo(todo: Todo) {
-    const newTodosState = this.state.todos.filter((item) => {
-      return item.description !== todo.description;
-    });
+    const newTodosState = this.state.todos.filter((t) => t !== todo);
     this.setState({ todos: newTodosState });
   }
 
