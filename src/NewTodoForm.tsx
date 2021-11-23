@@ -23,10 +23,6 @@ class NewTodoForm extends React.Component<NewTodoFormProps, NewTodoFormState> {
     this.setState({ inputValue: event.currentTarget.value });
   }
 
-  reset() {
-    this.setState({ inputValue: "", errorMessage: "" });
-  }
-
   todoExists(description: string) {
     const { todos } = this.props;
     const match = todos.find((t) => t.description === description);
@@ -48,7 +44,7 @@ class NewTodoForm extends React.Component<NewTodoFormProps, NewTodoFormState> {
       });
     } else {
       this.props.createTodo(this.state.inputValue);
-      this.reset();
+      this.setState({ inputValue: "", errorMessage: "" });
     }
   }
 
