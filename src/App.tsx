@@ -20,13 +20,12 @@ class App extends React.Component<TodoList, TodoList> {
 
   toggleTodoCompletion(todo: Todo) {
     const newTodosState = this.state.todos.map((t) => {
-      if (todo.description === t.description) {
+      if (t === todo) {
         return { description: todo.description, complete: !todo.complete };
       } else {
         return t;
       }
     });
-
     this.setState({ todos: newTodosState });
   }
 
