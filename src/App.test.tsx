@@ -84,7 +84,6 @@ it("updates a todo's completion properly", () => {
 
   userEvent.click(checkboxElement);
   expect(checkboxElement).toBeChecked();
-
   userEvent.click(checkboxElement);
   expect(checkboxElement).not.toBeChecked();
 });
@@ -112,14 +111,41 @@ describe("todo filtering", () => {
       const todoElement = screen.getByText(todo.description);
       expect(todoElement).toBeInTheDocument();
     });
-
     nonMatchingTodos.forEach((todo) => {
       const todoElement = screen.queryByText(todo.description);
       expect(todoElement).not.toBeInTheDocument();
     });
   });
 
-  xit("filters by completion properly", () => {});
+  describe("completion filter", () => {
+    it("shows completed todos when checked", () => {
+      const matchingTodos = [
+        { description: "something", complete: true },
+        { description: "something else", complete: true },
+      ];
+      const nonMatchingTodos = [
+        { description: "do that thing", complete: false },
+        { description: "do that other thing", complete: false },
+      ];
+      const todos = [...matchingTodos, ...nonMatchingTodos];
+      const props = { todos: todos };
+      render(<App {...props} />);
+
+      const checkboxElement = screen.getByRole("checkbox", {
+        name: "Filter by completion",
+      });
+      userEvent.click(checkboxElement);
+
+      matchingTodos.forEach((todo) => {
+        const todoElement = screen.getByText(todo.description);
+        expect(todoElement).toBeInTheDocument();
+      });
+      nonMatchingTodos.forEach((todo) => {
+        const todoElement = screen.queryByText(todo.description);
+        expect(todoElement).not.toBeInTheDocument();
+      });
+    });
+  });
 
   xit("filters by description AND completion properly", () => {});
 });

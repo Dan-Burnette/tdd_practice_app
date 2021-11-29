@@ -34,19 +34,21 @@ function App(props: TodoList) {
     setTodos(newTodosState);
   };
 
-  // Get all todos that match the filter
   const filteredTodos = () => {
-    return todos.filter((todo) =>
-      todo.description.includes(filterParams.description)
-    );
+    return todos.filter((todo) => {
+      const descriptionMatch = todo.description.includes(
+        filterParams.description
+      );
+      const completionMatch = todo.complete === filterParams.complete;
+      return descriptionMatch && completionMatch;
+    });
   };
 
   return (
     <div className="App">
       <header className="App-header">My Todos</header>
-
-      <Filters params={filterParams} filter={setFilterParams} />
       <NewTodoForm todos={todos} createTodo={createTodo} />
+      <Filters params={filterParams} setFilterParams={setFilterParams} />
       <ul>
         {filteredTodos().map((todo, idx) => {
           return (

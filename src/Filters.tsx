@@ -3,32 +3,26 @@ import { Todo } from "./interfaces";
 
 interface FilterProps {
   params: Todo;
-  filter: (params: Todo) => void;
+  setFilterParams: (params: Todo) => void;
 }
 
 function Filters(props: FilterProps) {
-  const { params, filter } = props;
-  // const [inputValue, setInputValue] = useState("");
-
-  // Just track description + complete in local state (the filter state).
-  // Then we simply call the filter function with the local state
-  // const handleFilterChange = (e) => {
-  //   const params = {
-  //     description: "",
-  //     complete: false,
-  //   };
-  //
-  //   props.filter(params);
-  // };
+  const { params, setFilterParams } = props;
 
   const handleDescriptionFilterChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const newParams = {
-      description: event.target.value,
-      complete: params.complete,
-    };
-    filter(newParams);
+    const newParams = Object.assign({}, params);
+    newParams.description = event.target.value;
+    setFilterParams(newParams);
+  };
+
+  const handleCompletionFilterChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newParams = Object.assign({}, params);
+    newParams.complete = event.target.checked;
+    setFilterParams(newParams);
   };
 
   return (
@@ -40,6 +34,15 @@ function Filters(props: FilterProps) {
         name="todo-description-filter"
         value={params.description}
         onChange={handleDescriptionFilterChange}
+      />
+
+      <label htmlFor="todo-completion-filter">Filter by completion</label>
+      <input
+        type="checkbox"
+        id="todo-completion-filter"
+        name="todo-completion-filter"
+        checked={params.complete}
+        onChange={handleCompletionFilterChange}
       />
     </div>
   );
