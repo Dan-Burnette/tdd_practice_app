@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { Todo, TodoList } from "./interfaces";
 import NewTodoForm from "./NewTodoForm";
 import EditTodoForm from "./EditTodoForm";
+import Filters from "./Filters";
 import "./App.css";
 
 function App(props: TodoList) {
   const [todos, setTodos] = useState(props.todos);
+  const [filterParams, setFilterParams] = useState({
+    description: "",
+    complete: false,
+  });
 
   const createTodo = (description: string) => {
     const newTodo = { description: description, complete: false };
@@ -29,12 +34,21 @@ function App(props: TodoList) {
     setTodos(newTodosState);
   };
 
+  // Get all todos that match the filter
+  const filteredTodos = () => {
+    return todos.filter((todo) =>
+      todo.description.includes(filterParams.description)
+    );
+  };
+
   return (
     <div className="App">
-      <header className="App-header">Todo Application</header>
+      <header className="App-header">My Todos</header>
+
+      <Filters params={filterParams} filter={setFilterParams} />
       <NewTodoForm todos={todos} createTodo={createTodo} />
       <ul>
-        {todos.map((todo, idx) => {
+        {filteredTodos().map((todo, idx) => {
           return (
             <li key={idx}>
               <EditTodoForm

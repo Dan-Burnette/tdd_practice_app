@@ -8,7 +8,7 @@ describe("element rendering", () => {
     const props = { todos: [] };
     render(<App {...props} />);
 
-    const headerElement = screen.getByText("Todo Application");
+    const headerElement = screen.getByText("My Todos");
     expect(headerElement).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ it("creates a todo properly", () => {
   const props = { todos: [] };
   render(<App {...props} />);
 
-  const todoInputElement = screen.getByRole("textbox");
+  const todoInputElement = screen.getByRole("textbox", { name: "New Todo" });
   userEvent.type(todoInputElement, "do something");
 
   const createTodoButtonElement = screen.getByText("Create Todo");
@@ -87,4 +87,39 @@ it("updates a todo's completion properly", () => {
 
   userEvent.click(checkboxElement);
   expect(checkboxElement).not.toBeChecked();
+});
+
+describe("todo filtering", () => {
+  it("filters by description properly", () => {
+    const matchingTodos = [
+      { description: "something", complete: false },
+      { description: "something else", complete: false },
+    ];
+    const nonMatchingTodos = [
+      { description: "do that thing", complete: false },
+      { description: "do that other thing", complete: false },
+    ];
+    const todos = [...matchingTodos, ...nonMatchingTodos];
+    const props = { todos: todos };
+    render(<App {...props} />);
+
+    const filterInputElement = screen.getByRole("textbox", {
+      name: "Filter by description",
+    });
+    userEvent.type(filterInputElement, "something");
+
+    matchingTodos.forEach((todo) => {
+      const todoElement = screen.getByText(todo.description);
+      expect(todoElement).toBeInTheDocument();
+    });
+
+    nonMatchingTodos.forEach((todo) => {
+      const todoElement = screen.queryByText(todo.description);
+      expect(todoElement).not.toBeInTheDocument();
+    });
+  });
+
+  xit("filters by completion properly", () => {});
+
+  xit("filters by description AND completion properly", () => {});
 });
