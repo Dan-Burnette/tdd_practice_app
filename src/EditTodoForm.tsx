@@ -10,10 +10,6 @@ interface EditTodoFormProps {
 function EditTodoForm(props: EditTodoFormProps) {
   const { todo, toggleTodoCompletion, deleteTodo } = props;
 
-  const handleUpdate = (event: React.FormEvent<HTMLInputElement>) => {
-    toggleTodoCompletion(todo);
-  };
-
   const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     deleteTodo(todo);
@@ -27,7 +23,7 @@ function EditTodoForm(props: EditTodoFormProps) {
         type="checkbox"
         id="edit-todo"
         name="edit-todo"
-        onChange={handleUpdate}
+        onChange={(e) => toggleTodoCompletion(todo)}
         checked={todo.complete}
       />
 

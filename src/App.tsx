@@ -1,64 +1,53 @@
-import React from "react";
-import autobind from "autobind-decorator";
+import React, { useState } from "react";
 import { Todo, TodoList } from "./interfaces";
 import NewTodoForm from "./NewTodoForm";
 import EditTodoForm from "./EditTodoForm";
 import "./App.css";
 
-@autobind
-class App extends React.Component<TodoList, TodoList> {
-  constructor(props: TodoList) {
-    super(props);
-    this.state = props;
-  }
+function App(props: TodoList) {
+  const [todos, setTodos] = useState(props.todos);
 
-  createTodo(description: string) {
+  const createTodo = (description: string) => {
     const newTodo = { description: description, complete: false };
-    const newTodosState = [...this.state.todos, newTodo];
-    this.setState({ todos: newTodosState });
-  }
+    const newTodosState = [...todos, newTodo];
+    setTodos(newTodosState);
+  };
 
-  toggleTodoCompletion(todo: Todo) {
-    const newTodosState = this.state.todos.map((t) => {
+  const toggleTodoCompletion = (todo: Todo) => {
+    const newTodosState = todos.map((t) => {
       if (t === todo) {
         return { description: todo.description, complete: !todo.complete };
       } else {
         return t;
       }
     });
-    this.setState({ todos: newTodosState });
-  }
+    setTodos(newTodosState);
+  };
 
-  deleteTodo(todo: Todo) {
-    const newTodosState = this.state.todos.filter((t) => t !== todo);
-    this.setState({ todos: newTodosState });
-  }
+  const deleteTodo = (todo: Todo) => {
+    const newTodosState = todos.filter((t) => t !== todo);
+    setTodos(newTodosState);
+  };
 
-  todos() {
-    const { toggleTodoCompletion, deleteTodo } = this;
-    return this.state.todos.map((todo, idx) => {
-      return (
-        <li key={idx}>
-          <EditTodoForm
-            todo={todo}
-            toggleTodoCompletion={toggleTodoCompletion}
-            deleteTodo={deleteTodo}
-          />
-        </li>
-      );
-    });
-  }
-
-  render() {
-    const todos = this.todos();
-    return (
-      <div className="App">
-        <header className="App-header">Todo Application</header>
-        <NewTodoForm todos={this.state.todos} createTodo={this.createTodo} />
-        <ul>{todos}</ul>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <header className="App-header">Todo Application</header>
+      <NewTodoForm todos={todos} createTodo={createTodo} />
+      <ul>
+        {todos.map((todo, idx) => {
+          return (
+            <li key={idx}>
+              <EditTodoForm
+                todo={todo}
+                toggleTodoCompletion={toggleTodoCompletion}
+                deleteTodo={deleteTodo}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
