@@ -7,10 +7,8 @@ import "./App.css";
 
 function App(props: TodoList) {
   const [todos, setTodos] = useState(props.todos);
-  const [filterParams, setFilterParams] = useState({
-    description: "",
-    complete: false,
-  });
+  const [descriptionFilter, setDescriptionFilter] = useState("");
+  const [completionFilter, setCompletionFilter] = useState("all");
 
   const createTodo = (description: string) => {
     const newTodo = { description: description, complete: false };
@@ -34,12 +32,26 @@ function App(props: TodoList) {
     setTodos(newTodosState);
   };
 
+  const matchesDescriptionFilter = (todo: Todo) => {
+    return todo.description.includes(descriptionFilter);
+  };
+
+  const matchesCompletionFilter = (todo: Todo) => {
+    let completionMatch = false;
+    if (completionFilter === "all") {
+      completionMatch = true;
+    } else if (completionFilter === "in-progress") {
+      completionMatch = todo.complete === false;
+    } else if (completionFilter === "done") {
+      completionMatch = todo.complete === true;
+    }
+    return completionMatch;
+  };
+
   const filteredTodos = () => {
     return todos.filter((todo) => {
-      const descriptionMatch = todo.description.includes(
-        filterParams.description
-      );
-      const completionMatch = todo.complete === filterParams.complete;
+      const descriptionMatch = matchesDescriptionFilter(todo);
+      const completionMatch = matchesCompletionFilter(todo);
       return descriptionMatch && completionMatch;
     });
   };
@@ -48,7 +60,12 @@ function App(props: TodoList) {
     <div className="App">
       <header className="App-header">My Todos</header>
       <NewTodoForm todos={todos} createTodo={createTodo} />
-      <Filters params={filterParams} setFilterParams={setFilterParams} />
+      <Filters
+        descriptionFilter={descriptionFilter}
+        setDescriptionFilter={setDescriptionFilter}
+        completionFilter={completionFilter}
+        setCompletionFilter={setCompletionFilter}
+      />
       <ul>
         {filteredTodos().map((todo, idx) => {
           return (

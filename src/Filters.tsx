@@ -1,29 +1,19 @@
-import React, { useState } from "react";
-import { Todo } from "./interfaces";
+import React from "react";
 
 interface FilterProps {
-  params: Todo;
-  setFilterParams: (params: Todo) => void;
+  descriptionFilter: string;
+  setDescriptionFilter: (description: string) => void;
+  completionFilter: string;
+  setCompletionFilter: (description: string) => void;
 }
 
 function Filters(props: FilterProps) {
-  const { params, setFilterParams } = props;
-
-  const handleDescriptionFilterChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newParams = Object.assign({}, params);
-    newParams.description = event.target.value;
-    setFilterParams(newParams);
-  };
-
-  const handleCompletionFilterChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newParams = Object.assign({}, params);
-    newParams.complete = event.target.checked;
-    setFilterParams(newParams);
-  };
+  const {
+    descriptionFilter,
+    setDescriptionFilter,
+    completionFilter,
+    setCompletionFilter,
+  } = props;
 
   return (
     <div>
@@ -32,18 +22,20 @@ function Filters(props: FilterProps) {
         type="text"
         id="todo-description-filter"
         name="todo-description-filter"
-        value={params.description}
-        onChange={handleDescriptionFilterChange}
+        value={descriptionFilter}
+        onChange={(e) => setDescriptionFilter(e.target.value)}
       />
 
       <label htmlFor="todo-completion-filter">Filter by completion</label>
-      <input
-        type="checkbox"
-        id="todo-completion-filter"
+      <select
         name="todo-completion-filter"
-        checked={params.complete}
-        onChange={handleCompletionFilterChange}
-      />
+        id="todo-completion-filter"
+        onChange={(e) => setCompletionFilter(e.target.value)}
+      >
+        <option value="all">All</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
+      </select>
     </div>
   );
 }

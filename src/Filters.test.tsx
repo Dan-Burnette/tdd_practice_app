@@ -27,10 +27,15 @@ describe("element rendering", () => {
     expect(labelElement).toBeInTheDocument();
   });
 
-  it("renders the filter by completion input", () => {
-    const checkboxElement = screen.getByRole("checkbox", {
-      name: "Filter by completion",
-    });
-    expect(checkboxElement).toBeInTheDocument();
+  it("renders the filter by completion select", () => {
+    const selectElement = screen.getByLabelText("Filter by completion");
+
+    const allOptionElement = screen.getByText("All");
+    const inProgressOptionElement = screen.getByText("In Progress");
+    const doneOptionElement = screen.getByText("Done");
+    expect(selectElement).toBeInTheDocument();
+    expect(allOptionElement).toBeInTheDocument();
+    expect(inProgressOptionElement).toBeInTheDocument();
+    expect(doneOptionElement).toBeInTheDocument();
   });
 });

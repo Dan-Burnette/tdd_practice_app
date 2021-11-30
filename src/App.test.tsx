@@ -118,34 +118,107 @@ describe("todo filtering", () => {
   });
 
   describe("completion filter", () => {
-    it("shows completed todos when checked", () => {
-      const matchingTodos = [
+    it("shows all todos when 'All' is selected", () => {
+      const todos = [
         { description: "something", complete: true },
         { description: "something else", complete: true },
       ];
-      const nonMatchingTodos = [
-        { description: "do that thing", complete: false },
-        { description: "do that other thing", complete: false },
-      ];
-      const todos = [...matchingTodos, ...nonMatchingTodos];
       const props = { todos: todos };
       render(<App {...props} />);
 
-      const checkboxElement = screen.getByRole("checkbox", {
-        name: "Filter by completion",
-      });
-      userEvent.click(checkboxElement);
+      const selectElement = screen.getByRole("combobox");
+      userEvent.selectOptions(selectElement, "all");
 
-      matchingTodos.forEach((todo) => {
+      todos.forEach((todo) => {
         const todoElement = screen.getByText(todo.description);
         expect(todoElement).toBeInTheDocument();
       });
-      nonMatchingTodos.forEach((todo) => {
+    });
+
+    it("shows only uncompleted todos when 'In Progress' is selected", () => {
+      const completedTodos = [
+        { description: "something", complete: true },
+        { description: "something else", complete: true },
+      ];
+      const uncompletedTodos = [
+        { description: "do that thing", complete: false },
+        { description: "do that other thing", complete: false },
+      ];
+      const todos = [...completedTodos, ...uncompletedTodos];
+      const props = { todos: todos };
+      render(<App {...props} />);
+
+      const selectElement = screen.getByRole("combobox");
+      userEvent.selectOptions(selectElement, "in-progress");
+
+      uncompletedTodos.forEach((todo) => {
+        const todoElement = screen.getByText(todo.description);
+        expect(todoElement).toBeInTheDocument();
+      });
+
+      completedTodos.forEach((todo) => {
+        const todoElement = screen.queryByText(todo.description);
+        expect(todoElement).not.toBeInTheDocument();
+      });
+    });
+
+    it("shows only completed todos when 'Done' is selected", () => {
+      const completedTodos = [
+        { description: "something", complete: true },
+        { description: "something else", complete: true },
+      ];
+      const uncompletedTodos = [
+        { description: "do that thing", complete: false },
+        { description: "do that other thing", complete: false },
+      ];
+      const todos = [...completedTodos, ...uncompletedTodos];
+      const props = { todos: todos };
+      render(<App {...props} />);
+
+      const selectElement = screen.getByRole("combobox");
+      userEvent.selectOptions(selectElement, "done");
+
+      completedTodos.forEach((todo) => {
+        const todoElement = screen.getByText(todo.description);
+        expect(todoElement).toBeInTheDocument();
+      });
+
+      uncompletedTodos.forEach((todo) => {
         const todoElement = screen.queryByText(todo.description);
         expect(todoElement).not.toBeInTheDocument();
       });
     });
   });
 
-  xit("filters by description AND completion properly", () => {});
+  it("combines description AND completion filters properly", () => {
+    const matchingTodos = [
+      { description: "something big", complete: true },
+      { description: "something fun", complete: true },
+    ];
+    const nonMatchingTodos = [
+      { description: "something neato", complete: false },
+      { description: "something cool", complete: false },
+    ];
+
+    const todos = [...matchingTodos, ...nonMatchingTodos];
+    const props = { todos: todos };
+    render(<App {...props} />);
+
+    const filterInputElement = screen.getByRole("textbox", {
+      name: "Filter by description",
+    });
+    const selectElement = screen.getByRole("combobox");
+    userEvent.type(filterInputElement, "something");
+    userEvent.selectOptions(selectElement, "done");
+
+    matchingTodos.forEach((todo) => {
+      const todoElement = screen.getByText(todo.description);
+      expect(todoElement).toBeInTheDocument();
+    });
+
+    nonMatchingTodos.forEach((todo) => {
+      const todoElement = screen.queryByText(todo.description);
+      expect(todoElement).not.toBeInTheDocument();
+    });
+  });
 });
