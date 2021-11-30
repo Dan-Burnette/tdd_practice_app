@@ -63,7 +63,6 @@ function App(props: TodoList) {
       <Filters
         descriptionFilter={descriptionFilter}
         setDescriptionFilter={setDescriptionFilter}
-        completionFilter={completionFilter}
         setCompletionFilter={setCompletionFilter}
       />
       <ul>

@@ -3,17 +3,12 @@ import React from "react";
 interface FilterProps {
   descriptionFilter: string;
   setDescriptionFilter: (description: string) => void;
-  completionFilter: string;
-  setCompletionFilter: (description: string) => void;
+  setCompletionFilter: (completionStatus: string) => void;
 }
 
 function Filters(props: FilterProps) {
-  const {
-    descriptionFilter,
-    setDescriptionFilter,
-    completionFilter,
-    setCompletionFilter,
-  } = props;
+  const { descriptionFilter, setDescriptionFilter, setCompletionFilter } =
+    props;
 
   return (
     <div>
