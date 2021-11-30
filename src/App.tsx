@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Todo, TodoList } from "./interfaces";
 import NewTodoForm from "./NewTodoForm";
 import EditTodoForm from "./EditTodoForm";
+import Filters from "./Filters";
 import "./App.css";
 
 function App(props: TodoList) {
   const [todos, setTodos] = useState(props.todos);
+  const [descriptionFilter, setDescriptionFilter] = useState("");
+  const [completionFilter, setCompletionFilter] = useState("all");
 
   const createTodo = (description: string) => {
     const newTodo = { description: description, complete: false };
@@ -29,12 +32,42 @@ function App(props: TodoList) {
     setTodos(newTodosState);
   };
 
+  const matchesDescriptionFilter = (todo: Todo) => {
+    return todo.description.includes(descriptionFilter);
+  };
+
+  const matchesCompletionFilter = (todo: Todo) => {
+    let completionMatch = false;
+    if (completionFilter === "all") {
+      completionMatch = true;
+    } else if (completionFilter === "in-progress") {
+      completionMatch = todo.complete === false;
+    } else if (completionFilter === "done") {
+      completionMatch = todo.complete === true;
+    }
+    return completionMatch;
+  };
+
+  const filteredTodos = () => {
+    return todos.filter((todo) => {
+      const descriptionMatch = matchesDescriptionFilter(todo);
+      const completionMatch = matchesCompletionFilter(todo);
+      return descriptionMatch && completionMatch;
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">Todo Application</header>
+      <header className="App-header">My Todos</header>
       <NewTodoForm todos={todos} createTodo={createTodo} />
+      <Filters
+        descriptionFilter={descriptionFilter}
+        setDescriptionFilter={setDescriptionFilter}
+        completionFilter={completionFilter}
+        setCompletionFilter={setCompletionFilter}
+      />
       <ul>
-        {todos.map((todo, idx) => {
+        {filteredTodos().map((todo, idx) => {
           return (
             <li key={idx}>
               <EditTodoForm

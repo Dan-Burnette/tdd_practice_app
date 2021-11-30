@@ -10,8 +10,7 @@ interface NewTodoFormProps {
 function NewTodoForm(props: NewTodoFormProps) {
   const { todos, createTodo } = props;
   const [inputValue, setInputValue] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const errorPresent = errorMessage.length > 0;
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const todoExists = (description: string) => {
     const match = todos.find((t) => t.description === description);
@@ -30,10 +29,11 @@ function NewTodoForm(props: NewTodoFormProps) {
     } else {
       createTodo(inputValue);
       setInputValue("");
-      setErrorMessage("");
+      setErrorMessage(null);
     }
   };
 
+  const errorPresent = errorMessage !== null;
   return (
     <form name="new-todo">
       <label htmlFor="new-todo">New Todo</label>
